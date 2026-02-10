@@ -1,26 +1,33 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { isValidNPI } from "./utils/luhn";
 interface NPIProps {
+  type: string;
   setFName?: React.Dispatch<React.SetStateAction<string>>;
   setLName?: React.Dispatch<React.SetStateAction<string>>;
   setPhone?: React.Dispatch<React.SetStateAction<string>>;
   setNPI?: React.Dispatch<React.SetStateAction<string>>;
   setAddress?: React.Dispatch<React.SetStateAction<string>>;
   setState?: React.Dispatch<React.SetStateAction<string>>;
+  setCity?: React.Dispatch<React.SetStateAction<string>>;
+  setCountry?: React.Dispatch<React.SetStateAction<string>>;
+  setCountryName?: React.Dispatch<React.SetStateAction<string>>;
   setZip?: React.Dispatch<React.SetStateAction<string>>;
   setOrg?: React.Dispatch<React.SetStateAction<string>>;
 }
 export const NPI = (props: NPIProps) => {
   const [npi, setNpi] = useState("");
   const {
+    type,
     setFName,
     setLName,
     setAddress,
     setState,
     setZip,
+    setCity,
+    setCountry,
+    setCountryName,
     setPhone,
     setOrg,
-    setNPI,
   } = props;
   const cachedData: string[] = [];
 
@@ -36,12 +43,13 @@ export const NPI = (props: NPIProps) => {
     setNpi(e.target.value);
   };
 
-  let npiCache: string = "";
+  const [npiCache, setNpiCache] = useState("");
   useEffect(() => {
     const valid = isValidNPI(npi);
-
+    console.log(`NPI: ${npi}, Valid: ${valid}, Cache: ${npiCache}`);
     if (valid && npi !== npiCache) {
-      npiCache = npi;
+      setNpiCache(npi);
+
       fetch(`npi/`)
         .then((response) => response.json())
         .then((data) => {
@@ -52,17 +60,18 @@ export const NPI = (props: NPIProps) => {
           fnWrapper(setLName, basic.authorized_official_last_name);
           fnWrapper(setPhone, address.telephone_number);
           fnWrapper(setAddress, address.address_1);
+          fnWrapper(setCity, address.city);
           fnWrapper(setState, address.state);
           fnWrapper(setZip, address.postal_code);
-
+          fnWrapper(setCountry, address.country_code);
+          fnWrapper(setCountryName, address.country_name);
           console.log("Fetched data:", data);
         })
         .catch((error) => {
           console.error("Error fetching data:", error);
         });
     }
-  }),
-    [npi];
+  }, [npi]);
 
   return (
     <div>

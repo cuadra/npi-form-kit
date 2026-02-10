@@ -5,17 +5,23 @@ export const Form = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [zip, setZip] = useState("");
+  const [country, setCountry] = useState("");
+  const [countryName, setCountryName] = useState("");
   const [phone, setPhone] = useState("");
   const [npiNumber, setNPINumber] = useState("");
   const [org, setOrg] = useState("");
-  const map = {
+  const config = {
     setFName: setFirstName,
     setLName: setLastName,
     setAddress: setAddress,
+    setCity: setCity,
     setState: setState,
     setZip: setZip,
+    setCountry: setCountry,
+    setCountryName: setCountryName,
     setPhone: setPhone,
     setNPI: setNPINumber,
     setOrg: setOrg,
@@ -29,6 +35,9 @@ export const Form = () => {
   const addressChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAddress(e.target.value);
   };
+  const cityChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCity(e.target.value);
+  };
   const stateChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setState(e.target.value);
   };
@@ -38,6 +47,13 @@ export const Form = () => {
   const orgChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setOrg(e.target.value);
   };
+  const countryChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCountry(e.target.value);
+  };
+  const countryNameChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCountryName(e.target.value);
+  };
+
   return (
     <form>
       <fieldset>
@@ -68,6 +84,12 @@ export const Form = () => {
 
         <input
           type="text"
+          onChange={cityChangeHandler}
+          value={city}
+          placeholder="City"
+        />
+        <input
+          type="text"
           onChange={stateChangeHandler}
           value={state}
           placeholder="State"
@@ -78,9 +100,22 @@ export const Form = () => {
           value={zip}
           placeholder="Zip Code"
         />
+
+        <input
+          type="text"
+          onChange={countryChangeHandler}
+          value={country}
+          placeholder="Country"
+        />
+        <input
+          type="text"
+          onChange={countryNameChangeHandler}
+          value={countryName}
+          placeholder="Country Name"
+        />
       </fieldset>
       1003101296
-      <NPI {...map}>Test</NPI>
+      <NPI type="MAILING" {...config} />
     </form>
   );
 };
