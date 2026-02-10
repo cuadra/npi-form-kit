@@ -8,11 +8,20 @@ interface NPIProps {
   setAddress?: React.Dispatch<React.SetStateAction<string>>;
   setState?: React.Dispatch<React.SetStateAction<string>>;
   setZip?: React.Dispatch<React.SetStateAction<string>>;
+  setOrg?: React.Dispatch<React.SetStateAction<string>>;
 }
 export const NPI = (props: NPIProps) => {
   const [npi, setNpi] = useState("");
-  const { setFName, setLName, setAddress, setState, setZip, setPhone, setNPI } =
-    props;
+  const {
+    setFName,
+    setLName,
+    setAddress,
+    setState,
+    setZip,
+    setPhone,
+    setOrg,
+    setNPI,
+  } = props;
   const cachedData: string[] = [];
 
   const fnWrapper = (
@@ -27,15 +36,18 @@ export const NPI = (props: NPIProps) => {
     setNpi(e.target.value);
   };
 
+  let npiCache: string = "";
   useEffect(() => {
     const valid = isValidNPI(npi);
 
-    if (valid) {
+    if (valid && npi !== npiCache) {
+      npiCache = npi;
       fetch(`npi/`)
         .then((response) => response.json())
         .then((data) => {
           const address = data.addresses[0];
           const basic = data.basic;
+          fnWrapper(setOrg, basic.organization_name);
           fnWrapper(setFName, basic.authorized_official_first_name);
           fnWrapper(setLName, basic.authorized_official_last_name);
           fnWrapper(setPhone, address.telephone_number);

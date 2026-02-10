@@ -9,6 +9,7 @@ export const Form = () => {
   const [zip, setZip] = useState("");
   const [phone, setPhone] = useState("");
   const [npiNumber, setNPINumber] = useState("");
+  const [org, setOrg] = useState("");
   const map = {
     setFName: setFirstName,
     setLName: setLastName,
@@ -17,6 +18,7 @@ export const Form = () => {
     setZip: setZip,
     setPhone: setPhone,
     setNPI: setNPINumber,
+    setOrg: setOrg,
   };
   const firstNameChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFirstName(e.target.value);
@@ -33,9 +35,18 @@ export const Form = () => {
   const zipChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setZip(e.target.value);
   };
+  const orgChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setOrg(e.target.value);
+  };
   return (
     <form>
       <fieldset>
+        <input
+          type="text"
+          onChange={orgChangeHandler}
+          value={org}
+          placeholder="First Name"
+        />
         <input
           type="text"
           onChange={firstNameChangeHandler}
