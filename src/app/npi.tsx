@@ -13,11 +13,13 @@ interface NPIProps {
   setCountryName?: React.Dispatch<React.SetStateAction<string>>;
   setZip?: React.Dispatch<React.SetStateAction<string>>;
   setOrg?: React.Dispatch<React.SetStateAction<string>>;
+  children: React.ReactElement<React.InputHTMLAttributes<HTMLInputElement>>;
 }
 export const NPI = (props: NPIProps) => {
   const [npi, setNpi] = useState("");
   const {
     type,
+    children,
     setFName,
     setLName,
     setAddress,
@@ -44,12 +46,13 @@ export const NPI = (props: NPIProps) => {
   };
 
   const [npiCache, setNpiCache] = useState("");
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     const valid = isValidNPI(npi);
     console.log(`NPI: ${npi}, Valid: ${valid}, Cache: ${npiCache}`);
     if (valid && npi !== npiCache) {
       setNpiCache(npi);
-
+      setLoading(true);
       fetch(`npi/`)
         .then((response) => response.json())
         .then((data) => {
@@ -65,6 +68,7 @@ export const NPI = (props: NPIProps) => {
           fnWrapper(setZip, address.postal_code);
           fnWrapper(setCountry, address.country_code);
           fnWrapper(setCountryName, address.country_name);
+          setLoading(false);
           console.log("Fetched data:", data);
         })
         .catch((error) => {
@@ -74,9 +78,17 @@ export const NPI = (props: NPIProps) => {
   }, [npi]);
 
   return (
-    <div>
-      <h1>NPI Component {npi}</h1>
-      <input onChange={changeHandler} value={npi} />
-    </div>
+    <>
+      {!loading &&
+        React.cloneElement(children, {
+          onChange: changeHandler,
+          value: npi,
+        })}
+      {loading &&
+        React.cloneElement(children, {
+          disabled: true,
+          value: "Loading...",
+        })}
+    </>
   );
 };
