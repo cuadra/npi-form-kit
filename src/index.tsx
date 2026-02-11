@@ -56,11 +56,12 @@ export const Pimkit = (props: NPIProps) => {
     if (valid && npi !== npiCache) {
       setNpiCache(npi);
       setLoading(true);
-      fetch(api)
+      fetch(`${api}?number=${npi}`)
         .then((response) => response.json())
         .then((data) => {
-          const address = data.addresses[0];
-          const basic = data.basic;
+          const results = data.results[0];
+          const address = results.addresses[0];
+          const basic = results.basic;
           fnWrapper(setOrg, basic.organization_name);
           fnWrapper(setFName, basic.authorized_official_first_name);
           fnWrapper(setLName, basic.authorized_official_last_name);
