@@ -1,8 +1,6 @@
-# Pimkit
+# Pimkit (Provider Identifier Mapper Kit)
 
-## About
-
-A reusable React component that performs an NPI (National Provider Identifier) lookup and automatically maps the returned provider data to your application states, enabling seamless autofill of related form fields such as name, address, phone number, and organization details.
+A reusable React component that performs an NPI (National Provider Identifier) lookup and automatically maps the returned provider data to your application's states, enabling seamless autofill of related form fields such as name, address, phone number, and organization details.
 
 The component validates and resolves an NPI, retrieves provider information, and updates supplied state setters so forms can populate instantly without manual data entry. Designed to be lightweight and flexible, it allows developers to connect only the fields they need, making it easy to integrate into existing form workflows or larger data-entry systems.
 
@@ -87,7 +85,7 @@ export const Form = () => {
 
 ### API Response Shape
 
-The component reads `basic` and the first('MAILING' and 'LOCATION' options coming soon) entry in `addresses` from the response:
+The component reads `basic` and the first entry in `addresses` from the response:
 
 ```json
 {
@@ -115,6 +113,10 @@ The component reads `basic` and the first('MAILING' and 'LOCATION' options comin
 - The child element must be a single `<input>` element; `Pimkit` clones it to manage `value`, `onChange`, and `disabled` state.
 - Only pass the setters you want populated. Any omitted setters are ignored.
 - The NPI is validated with a Luhn check before the `api` request is made.
+
+### Todo
+- Ability to choose between mailing and location addresses.
+- Include other country identifiers. (Currently only US)
 
 ## Example App
 
